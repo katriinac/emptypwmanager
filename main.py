@@ -44,15 +44,22 @@ usernames = []
 
 # Function to add a new password 
 def add_password():
-    """
-    Add a new password to the password manager.
+    website = input("Enter website: ") #kysyy sivua
+    username = input("Enter username: ") #kysyy käyttäjätunnusta
+    genpass = input("Generate a random password? (yes or no): ").lower() #kysyy luodaanko salasana valmiiksi ja vaihtaa vastaksen pieniin kirjaimiin
 
-    This function should prompt the user for the website, username,  and password and store them to lits with same index. Optionally, it should check password strengh with the function is_strong_password. It may also include an option for the user to
-    generate a random strong password by calling the generate_password function.
+    if genpass == "yes": #jos vastasi kyllä
+        password = generate_password(12) #luodaan salasana joka on 12 merkkiä pitkä
+        print(f"Generated password: {password}") #printataa luotu salasana
+    else: #jos vastaus on ei
+        password = input("Enter password: ") #syöttää käyttäjä itse salasanan
+    encrypted = caesar_encrypt(password, 3) #salataan se jolloin shift on 3
 
-    Returns:
-        None
-    """
+    websites.append(website) #lisätään listaan tiedot
+    usernames.append(username) 
+    encrypted_passwords.append(encrypted)
+
+    print("Password added successfully")
 
 # Function to retrieve a password 
 def get_password():
