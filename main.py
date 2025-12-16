@@ -108,7 +108,7 @@ def load_passwords():
     Returns:
         None
 
-  # Main method
+  # Main
 def main():
 # implement user interface 
 
