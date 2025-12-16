@@ -62,52 +62,68 @@ def add_password():
     print("Password added successfully")
 
 # Function to retrieve a password 
-def get_password():
-    if not websites:
-        print("No passwords stored yet.") #tarkistetaan onko salasanoja tallenettu
-        return
-    website = input("Enter website: ") #kysytään käyttäjältä verkkosivun nimi
-    if website in websites:            #tarkistetaan löytyykö verkkosivu listalta
-        index = websites.index(website) #haetaan sivun indeksi
-        encrypted = encrypted_passwords[index] #haetaan salattu salasana ja käyttäjätunnus
-        username = usernames[index]
-    
-        decrypted_password = caesar_decrypt(encrypted, 3) #puretaan salasana Caesar-salauksesta (shift=3)
-    
-        print("\nPassword found:")
-        print(f"Website: {website}")
-        print(f"Username: {username}")
-        print(f"Password: {decrypted_password}")
-    else:
-        print("No password found for this website.") #jos verkkosivua ei löydy
-
-# Function to save passwords to a JSON file 
 def save_passwords():
- """
+    """
     Save the password vault to a file.
 
-    This function should save passwords, websites, and usernames to a text
-    file named "vault.txt" in a structured format.
-
-    Returns:
-        None
+    This function saves passwords, websites, and usernames to a file
+    named "vault.txt" in a structured JSON format.
     """
+    # Combine the parallel lists into a list of dictionaries for a structured format
+    vault_data = []
+    for i in range(len(websites)):
+        entry = {
+            "website": websites[i],
+            "username": usernames[i],
+            "password": passwords[i]
+        }
+        vault_data.append(entry)
 
-    Returns:
-        None
-    """
+    try:
+        # Open the file in write mode ('w')
+        with open("vault.txt", "w") as f:
+            # Use json.dump to write the list of dictionaries to the file
+            # indent=4 makes the file human-readable
+            json.dump(vault_data, f, indent=4)
+        print("Passwords saved successfully to vault.txt")
+    except IOError as e:
+        # Handle potential file writing errors
+        print(f"Error: Could not save passwords to file. {e}")
+
 
 # Function to load passwords from a JSON file 
 def load_passwords():
-     """
+    """
     Load passwords from a file into the password vault.
 
-    This function should load passwords, websites, and usernames from a text
-    file named "vault.txt" (or a more generic name) and populate the respective lists.
+    This function loads passwords, websites, and usernames from a
+    file named "vault.txt" and populates the respective lists.
+    """
+    try:
+        # Open the file in read mode ('r')
+        with open("vault.txt", "r") as f:
+            # Load the data from the file
+            vault_data = json.load(f)
+            
+            # Clear current lists to prevent duplication on reload
+            websites.clear()
+            usernames.clear()
+            passwords.clear()
 
-    Returns:
-        None
+            # Populate the lists from the loaded data
+            for entry in vault_data:
+                websites.append(entry["website"])
+                usernames.append(entry["username"])
+                passwords.append(entry["password"])
+        
+        print("Passwords loaded successfully from vault.txt")
 
+    except FileNotFoundError:
+        # This is expected on the first run, so we just print a message
+        print("No existing vault file found. A new one will be created when you save.")
+    except (json.JSONDecodeError, KeyError) as e:
+        # Handle cases where the file is corrupted or has an unexpected format
+        print(f"Error: Could not read or parse vault.txt. The file might be corrupted. {e}")
   # Main
 def main():
 # implement user interface 
