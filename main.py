@@ -131,7 +131,7 @@ def load_passwords():
         print(f"Error: Could not read or parse vault.txt. The file might be corrupted. {e}")
 
 
-  # Main method
+  # Main
 def main():
 # implement user interface 
 
