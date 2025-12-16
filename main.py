@@ -83,30 +83,60 @@ def get_password():
 
 # Function to save passwords to a JSON file 
 def save_passwords():
- """
-    Save the password vault to a file.
+    """
+    Save the password vault to a JSON file.
 
-    This function should save passwords, websites, and usernames to a text
-    file named "vault.txt" in a structured format.
+    This function saves passwords, websites, and usernames to a JSON
+    file named "vault.json" in a structured format.
 
     Returns:
         None
     """
-
-    Returns:
-        None
-    """
+    # Create a list of dictionaries to store the password data
+    password_data = []
+    for i in range(len(websites)):
+        password_data.append({
+            "website": websites[i],
+            "username": usernames[i],
+            "password": encrypted_passwords[i]
+        })
+    
+    # Write the data to a JSON file
+    with open("vault.json", "w") as file:
+        json.dump(password_data, file, indent=4)
+    
+    print("Passwords saved successfully!")
 
 # Function to load passwords from a JSON file 
 def load_passwords():
-     """
-    Load passwords from a file into the password vault.
+    """
+    Load passwords from a JSON file into the password vault.
 
-    This function should load passwords, websites, and usernames from a text
-    file named "vault.txt" (or a more generic name) and populate the respective lists.
+    This function loads passwords, websites, and usernames from a JSON
+    file named "vault.json" and populates the respective lists.
 
     Returns:
         None
+    """
+    try:
+        # Read the data from the JSON file
+        with open("vault.json", "r") as file:
+            password_data = json.load(file)
+        
+        # Clear the existing lists
+        websites.clear()
+        usernames.clear()
+        encrypted_passwords.clear()
+        
+        # Populate the lists with the loaded data
+        for entry in password_data:
+            websites.append(entry["website"])
+            usernames.append(entry["username"])
+            encrypted_passwords.append(entry["password"])
+        
+        print("Passwords loaded successfully!")
+    except FileNotFoundError:
+        print("No password file found. Starting with an empty vault.")
 
   # Main
 def main():
