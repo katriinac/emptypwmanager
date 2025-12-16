@@ -63,15 +63,23 @@ def add_password():
 
 # Function to retrieve a password 
 def get_password():
-    """
-    Retrieve a password for a given website.
-
-    This function should prompt the user for the website name and
-    then display the username and decrypted password for that website.
-
-    Returns:
-        None
-    """
+    if not websites:
+        print("No passwords stored yet.") #tarkistetaan onko salasanoja tallenettu
+        return
+    website = input("Enter website: ") #kysytään käyttäjältä verkkosivun nimi
+    if website in websites:            #tarkistetaan löytyykö verkkosivu listalta
+        index = websites.index(website) #haetaan sivun indeksi
+        encrypted = encrypted_passwords[index] #haetaan salattu salasana ja käyttäjätunnus
+        username = usernames[index]
+    
+        decrypted_password = caesar_decrypt(encrypted, 3) #puretaan salasana Caesar-salauksesta (shift=3)
+    
+        print("\nPassword found:")
+        print(f"Website: {website}")
+        print(f"Username: {username}")
+        print(f"Password: {decrypted_password}")
+    else:
+        print("No password found for this website.") #jos verkkosivua ei löydy
 
 # Function to save passwords to a JSON file 
 def save_passwords():
