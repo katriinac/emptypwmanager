@@ -60,8 +60,8 @@ def generate_password(length):
 # Generate a random strong password of the specified length.
 # Args: length (int): The desired length of the password.
 # Returns: str: A random strong password.
-  if length < 8: 
-    length = 8 # antaa 8 merkkiä vaikka valittaisiin alle 8
+    if length < 8: 
+        length = 8 # antaa 8 merkkiä vaikka valittaisiin alle 8
     characters = string.ascii_letters + string.digits + string.punctuation # kaikki aakkoset, numerot ja erikoismerkit
     return ''.join(random.choice(characters) for _ in range(length)) # arvotaan satunnaiset merkit, .join yhdistää ne merkkijonoksi
 
